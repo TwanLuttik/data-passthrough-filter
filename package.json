@@ -1,14 +1,25 @@
 {
-  "name": "data-passthrough-filter",
-  "version": "1.0.0",
+  "name": "@twanluttik/data-passthrough-filter",
+  "version": "0.0.2",
   "main": "dist/index.js",
-  "repository": "git@github.com:TwanLuttik/data-passthrough-filter.git",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/TwanLuttik/data-passthrough-filter.git"
+  },
   "author": "Twan Luttik",
   "license": "MIT",
+  "description": "A validation library",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "start": "tsc-watch --onSuccess \"node ./dist/index.js\""
   },
-  "dependencies": {
+  "bugs": {
+    "url": "https://github.com/TwanLuttik/data-passthrough-filter/issues"
+  },
+  "homepage": "https://github.com/TwanLuttik/data-passthrough-filter#readme",
+  "devDependencies": {
     "tsc": "^1.20150623.0",
     "tsc-watch": "^4.2.9",
     "typescript": "^4.0.2"
