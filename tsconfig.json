@@ -2,12 +2,14 @@
   "compilerOptions": {
     "target": "ES2017",
     "module": "CommonJS",
-    "allowJs": true,
+    "sourceMap": true,
     "declaration": true,
     "strictFunctionTypes": false,
     "esModuleInterop": true,   
     "strict": false,
-    "baseUrl": "./scr",
-    "outDir": "./dist",
-  }
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "outDir": "./dist"
+  },
+  "include": ["./src/**/*"]
 }
