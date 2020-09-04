@@ -24,7 +24,7 @@ export const validate = (data: object, schema?: ISchema, options?: { strict: boo
     // Check if all the keys from the schema is present from the input data
     Object.entries(schema).filter((x) => {
       const schemaKey = x[0];
-      if (data[schemaKey] === undefined) throw new Error('Missing key/value ' + schemaKey);
+      if (data[schemaKey] === undefined) throw new Error(`[${schemaKey}] is not provided`);
     });
 
   // iterate over the data we pass trough
