@@ -3,11 +3,6 @@
 <br>
 <br>
 
-# THIS PACKAGE IS STILL UNDER DEVELOPMENT
-
-<br>
-<br>
-<br>
 
 ## Example
 
@@ -17,6 +12,7 @@ import validator, { ISchema } from 'data-passthrough-filter';
 const input = {
   id: 1,
   email: 'example@email.com',
+  password: 'thebestpassword2019',
   admin: true
 };
 
@@ -29,28 +25,51 @@ const schema: ISchema {
     type: 'string',
     nullable: true
   },
-  id: {
-    type: 'number',
-    nullable: true
+  password: {
+    type: 'string',
+    length: {
+      min: 7,
+      max: 80
+    }
   }
 };
 
-const res = validator(input, scheme);
+const res = validator(input, scheme, { strict: true });
 ```
+
 <br>
 <br>
 
 ## Usage
 
 ```typescript
-validator(input, shema);
+validator(input, shema, options);
 ```
+
+<br>
+
+## Input
+
+You pass in an object with keys.
+
 <br>
 <br>
 
-**input** is your data input as an object with key/values.
+## Schema
+
+Schema is an object with keys as
+| Parameter | value | Description |
+| ----- | ------ | ------ |
+| type | `string`, `number`, `boolean`, `object`, `array`, | Set for a specific type |
+| nullable | `boolean` | nullable applied |
+| length | `{ min: number, max: number } ` | And object with an min and max value|
+
+<br>
+<br>
 <br>
 
-**Schema** is the way how you control how the data get passtrough by adding checks or types and etc.
+## Options
 
-
+| Parameter | value     | Description                                      |
+| --------- | --------- | ------------------------------------------------ |
+| strict    | `boolean` | Checks strictly if input matches with the schema |
