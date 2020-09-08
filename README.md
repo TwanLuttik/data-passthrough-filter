@@ -13,10 +13,11 @@ const input = {
   id: 1,
   email: 'example@email.com',
   password: 'thebestpassword2019',
-  admin: true
+  admin: true,
+  roles: ['admin', 'helpers']
 };
 
-const schema: ISchema {
+const schema: ISchema = {
   id: {
     type: 'number',
     nullable: false
@@ -31,7 +32,8 @@ const schema: ISchema {
       min: 7,
       max: 80
     }
-  }
+  },
+  admin: null
 };
 
 const res = validator(input, scheme, { strict: true });
@@ -41,6 +43,7 @@ const res = validator(input, scheme, { strict: true });
 <br>
 
 ## Usage
+- When you pass the data it returns the 
 
 ```typescript
 validator(input, shema, options);
@@ -58,6 +61,7 @@ You pass in an object with keys.
 ## Schema
 
 Schema is an object with keys as
+
 | Parameter | value | Description |
 | ----- | ------ | ------ |
 | type | `string`, `number`, `boolean`, `object`, `array`, | Set for a specific type |
@@ -69,6 +73,7 @@ Schema is an object with keys as
 <br>
 
 ## Options
+Additional options for validating your data
 
 | Parameter | value     | Description                                      |
 | --------- | --------- | ------------------------------------------------ |
