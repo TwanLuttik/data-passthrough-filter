@@ -1,9 +1,12 @@
 {
   "name": "data-passthrough-filter",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
-  "keywords": ["validation", "check" ],
+  "keywords": [
+    "validation",
+    "check"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/TwanLuttik/data-passthrough-filter"
