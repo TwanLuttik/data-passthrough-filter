@@ -9,10 +9,10 @@ export interface ISchema {
   };
 }
 
-export interface IOptions {
-  strict?: boolean;
+export interface IOptions {}
+
+export interface IErrorResults {
+  value?: string;
+  key?: any;
+  desc?: string;
 }
-
-// export interface IErrorResults {
-
-// }
