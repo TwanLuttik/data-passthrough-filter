@@ -10,7 +10,6 @@ export const validate = <T extends object>(data: T, schema?: ISchema, options?: 
   const dataEntries = Object.entries(data);
   let errors: Array<IErrorResults> = [];
 
-
   // iterate over the data we pass trough
   for (let item of dataEntries) {
     // variables
@@ -22,7 +21,7 @@ export const validate = <T extends object>(data: T, schema?: ISchema, options?: 
     if (rule === undefined) continue;
 
     // check if the type is correct
-    if (typeof value !== rule.type) {
+    if (rule?.type !== typeof value) {
       // errors.push(`[${key}] doesn't match with the type [${schema_key.type}]`);
       errors.push({ key, value, desc: `value doesn't meet the schema` });
       continue;
@@ -48,3 +47,38 @@ export const validate = <T extends object>(data: T, schema?: ISchema, options?: 
   if (errors.length > 0) throw errors;
   else return data;
 };
+
+(function () {
+  try {
+    const input = {
+      id: 1,
+      email: 'example@email.com',
+      password: '2020',
+      admin: true,
+      roles: ['admin', 'helpers'],
+    };
+
+    const schema: ISchema = {
+      id: {
+        type: 'number',
+        nullable: false,
+      },
+      email: {
+        type: 'string',
+        nullable: true,
+      },
+      password: {
+        type: 'string',
+        length: {
+          min: 7,
+          max: 80,
+        }
+      }
+    };
+
+    const res = validate(input, schema, { strict: true });
+    console.log('VALID + ', res);
+  } catch (e) {
+    console.log('ERROR + ', e);
+  }
+})();
