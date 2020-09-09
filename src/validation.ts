@@ -48,37 +48,3 @@ export const validate = <T extends object>(data: T, schema?: ISchema, options?: 
   else return data;
 };
 
-(function () {
-  try {
-    const input = {
-      id: 1,
-      email: 'example@email.com',
-      password: '2020',
-      admin: true,
-      roles: ['admin', 'helpers'],
-    };
-
-    const schema: ISchema = {
-      id: {
-        type: 'number',
-        nullable: false,
-      },
-      email: {
-        type: 'string',
-        nullable: true,
-      },
-      password: {
-        type: 'string',
-        length: {
-          min: 7,
-          max: 80,
-        }
-      }
-    };
-
-    const res = validate(input, schema, { strict: true });
-    console.log('VALID + ', res);
-  } catch (e) {
-    console.log('ERROR + ', e);
-  }
-})();
