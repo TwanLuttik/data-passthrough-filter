@@ -1,4 +1,4 @@
-import { IOptions, ISchema } from './interfaces';
+import { IErrorResults, IOptions, ISchema } from './interfaces';
 
 /**
  * @param {object} data Your input data as an object with k/v
@@ -8,42 +8,43 @@ import { IOptions, ISchema } from './interfaces';
  */
 export const validate = <T extends object>(data: T, schema?: ISchema, options?: IOptions): T | Array<any> => {
   const dataEntries = Object.entries(data);
+  let errors: Array<IErrorResults> = [];
 
-  // Check for strict
-  if (options?.strict)
-    
-  // Check if all the keys from the schema is present from the input data
-    Object.entries(schema).filter((x) => {
-      const schemaKey = x[0];
-      if (data[schemaKey] === undefined) throw new Error(`[${schemaKey}] is not provided`);
-    });
 
   // iterate over the data we pass trough
   for (let item of dataEntries) {
-
     // variables
     const key = item[0];
     const value = item[1];
-    const props = schema[key];
+    const rule = schema[key];
 
-    // only return the data if strict enabled
-    if (options?.strict && props === undefined) delete data[key];
+    // check if the key is present in the schema
+    if (rule === undefined) continue;
 
-    // check if required
-    if (props?.nullable === false && value === null) throw new Error(`[${key}] cannot be null`);
+    // check if the type is correct
+    if (typeof value !== rule.type) {
+      // errors.push(`[${key}] doesn't match with the type [${schema_key.type}]`);
+      errors.push({ key, value, desc: `value doesn't meet the schema` });
+      continue;
+    }
 
-    // check if type is set
-    if (props?.type && typeof value !== props.type)
-      throw new Error(`[${key}] doesn't match with the type [${props.type}]`);
+    if (!rule?.nullable && value === null) {
+      errors.push({ key, value, desc: 'Value cannot be null' });
+      continue;
+    }
 
     // Check for the length if its too short or too long
-    if (props?.length) {
-      if (value.length < props.length.min)
-        throw new Error(`[${key}] required min character count of ${props.length.min}`);
-      else if (value.length > props.length.max)
-        throw new Error(`[${key}] required max character count of ${props.length.min}`);
+    if (rule?.length) {
+      if (value.length < rule.length.min) {
+        errors.push({ key, value, desc: `The minimun required length is ${rule.length.min}` });
+        continue;
+      } else if (value.length > rule.length.max) {
+        errors.push({ key, value, desc: `The maxinum required length is ${rule.length.min}` });
+        continue;
+      }
     }
   }
 
-  return data;
+  if (errors.length > 0) throw errors;
+  else return data;
 };
