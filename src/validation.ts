@@ -38,7 +38,7 @@ export const validate = <T extends object>(data: T, schema?: ISchema, options?: 
         errors.push({ key, value, desc: `The minimun required length is ${rule.length.min}` });
         continue;
       } else if (value.length > rule.length.max) {
-        errors.push({ key, value, desc: `The maxinum required length is ${rule.length.min}` });
+        errors.push({ key, value, desc: `The maximun required length is ${rule.length.min}` });
         continue;
       }
     }
