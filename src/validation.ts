@@ -21,7 +21,7 @@ export const validate = <T extends object>(data: T, schema?: ISchema, options?: 
     if (rule === undefined) continue;
 
     // check if the type is correct
-    if (rule?.type !== typeof value) {
+    if (rule?.type && rule?.type !== typeof value) {
       // errors.push(`[${key}] doesn't match with the type [${schema_key.type}]`);
       errors.push({ key, value, desc: `value doesn't meet the schema` });
       continue;
@@ -34,11 +34,11 @@ export const validate = <T extends object>(data: T, schema?: ISchema, options?: 
 
     // Check for the length if its too short or too long
     if (rule?.length) {
-      if (value.length < rule.length.min) {
+      if (value.length <= rule.length.min) {
         errors.push({ key, value, desc: `The minimun required length is ${rule.length.min}` });
         continue;
-      } else if (value.length > rule.length.max) {
-        errors.push({ key, value, desc: `The maximun required length is ${rule.length.min}` });
+      } else if (value.length > rule.length?.max) {
+        errors.push({ key, value, desc: `The maximun required length is ${rule.length.max}` });
         continue;
       }
     }
@@ -47,4 +47,3 @@ export const validate = <T extends object>(data: T, schema?: ISchema, options?: 
   if (errors.length > 0) throw errors;
   else return data;
 };
-
