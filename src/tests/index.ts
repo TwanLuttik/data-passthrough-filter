@@ -7,7 +7,7 @@ import { validate } from '../';
     const data = {
       id: 1,
       email: 'twan@test.com',
-      password: 'sssst',
+      password: {},
       admin: {}
     }
 

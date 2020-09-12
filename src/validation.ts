@@ -1,4 +1,7 @@
 import { IErrorResults, IOptions, ISchema } from './interfaces';
+import { lengthCheck } from './lib';
+
+export let errors: Array<IErrorResults> = [];
 
 /**
  * @param {object} data Your input data as an object with k/v
@@ -6,9 +9,12 @@ import { IErrorResults, IOptions, ISchema } from './interfaces';
  * @param {boolean} options.strict It requires all the keys from the schema,
  * But it doesn't add extra data that is not listed in the schema
  */
-export const validate = <T extends object>(data: T, schema?: ISchema, options?: IOptions): T | Array<any> => {
+export const validate = <T extends object, V extends ISchema>(
+  data: T,
+  schema?: V,
+  options?: IOptions
+): T | Array<any> => {
   const dataEntries = Object.entries(data);
-  let errors: Array<IErrorResults> = [];
 
   // iterate over the data we pass trough
   for (let item of dataEntries) {
@@ -33,15 +39,7 @@ export const validate = <T extends object>(data: T, schema?: ISchema, options?: 
     }
 
     // Check for the length if its too short or too long
-    if (rule?.length) {
-      if (value.length <= rule.length.min) {
-        errors.push({ key, value, desc: `The minimun required length is ${rule.length.min}` });
-        continue;
-      } else if (value.length > rule.length?.max) {
-        errors.push({ key, value, desc: `The maximun required length is ${rule.length.max}` });
-        continue;
-      }
-    }
+    if (rule?.length) lengthCheck(key, value, rule);
   }
 
   if (errors.length > 0) throw errors;
