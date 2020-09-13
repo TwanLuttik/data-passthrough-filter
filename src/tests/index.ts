@@ -1,31 +1,29 @@
 import { validate } from '../';
 
-
-(function() {
+(function () {
   try {
-
     const data = {
       id: 1,
       email: 'twan@test.com',
-      password: {},
-      admin: {}
-    }
+      password: 'twan',
+      admin: false
+    };
 
-    const val = validate(data, {
-      id: {
-        type: 'number'
+    const val = validate(
+      data,
+      {
+        id: {},
+        email: {},
+        password: {},
       },
-      email: {
-        type: 'string'
-      },
-      password: {
-        length: { min: 3, max: 5 }
+      {
+        requireAll: true,
+        overflow: false
       }
-    });
-
-    console.log(val);
+    );
     
+    console.log(val);
   } catch (e) {
     console.log('ERROR', e);
   }
-}())
+})();
