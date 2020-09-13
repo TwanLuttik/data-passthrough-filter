@@ -13,10 +13,10 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
   let input = [];
 
   // require all check
-  if (options.requireAll) requireAll(data, schema);
+  if (options?.requireAll) requireAll(data, schema);
 
   // sanatize the data if we disallow overflow
-  input = options.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
+  input = options?.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
 
   // iterate over the data we pass trough
   for (let item of input) {
