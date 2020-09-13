@@ -9,7 +9,10 @@ export interface ISchema {
   };
 }
 
-export interface IOptions {}
+export interface IOptions {
+  requireAll?: boolean;
+  overflow?: boolean;
+}
 
 export interface IErrorResults {
   value?: string;

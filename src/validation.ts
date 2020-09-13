@@ -1,5 +1,5 @@
 import { IErrorResults, IOptions, ISchema } from './interfaces';
-import { lengthCheck } from './lib';
+import { lengthCheck, requireAll, sanatizeData } from './lib';
 
 export let errors: Array<IErrorResults> = [];
 
@@ -9,15 +9,17 @@ export let errors: Array<IErrorResults> = [];
  * @param {boolean} options.strict It requires all the keys from the schema,
  * But it doesn't add extra data that is not listed in the schema
  */
-export const validate = <T extends object, V extends ISchema>(
-  data: T,
-  schema?: V,
-  options?: IOptions
-): T | Array<any> => {
-  const dataEntries = Object.entries(data);
+export const validate = <T extends object, V extends ISchema>(data: T, schema?: V, options?: IOptions): T => {
+  let input = [];
+
+  // require all check
+  if (options.requireAll) requireAll(data, schema);
+
+  // sanatize the data if we disallow overflow
+  input = options.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
 
   // iterate over the data we pass trough
-  for (let item of dataEntries) {
+  for (let item of input) {
     // variables
     const key = item[0];
     const value = item[1];
@@ -28,14 +30,13 @@ export const validate = <T extends object, V extends ISchema>(
 
     // check if the type is correct
     if (rule?.type && rule?.type !== typeof value) {
+
       // errors.push(`[${key}] doesn't match with the type [${schema_key.type}]`);
       errors.push({ key, value, desc: `value doesn't meet the schema` });
-      continue;
     }
 
     if (!rule?.nullable && value === null) {
       errors.push({ key, value, desc: 'Value cannot be null' });
-      continue;
     }
 
     // Check for the length if its too short or too long
@@ -43,5 +44,5 @@ export const validate = <T extends object, V extends ISchema>(
   }
 
   if (errors.length > 0) throw errors;
-  else return data;
+  return <T>Object.fromEntries(input);
 };
