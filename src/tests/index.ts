@@ -23,7 +23,7 @@ import { validate } from '../';
     );
 
     if (val.error) console.log('ERROR', val.error)
-    else console.log(val.data);
+    else console.log(val);
     
   } catch (e) {
     console.log('ERROR', e);

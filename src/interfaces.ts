@@ -20,7 +20,7 @@ export interface IErrorResults {
   desc?: string;
 }
 
-export interface IResults<T> {
-  data?: T;
+export interface IResults {
+  [index: string]: any;
   error?: IErrorResults[];
 }
