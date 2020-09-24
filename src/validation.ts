@@ -1,4 +1,4 @@
-import { IErrorResults, IOptions, ISchema } from './interfaces';
+import { IErrorResults, IOptions, IResults, ISchema } from './interfaces';
 import { lengthCheck, requireAll, sanatizeData } from './lib';
 
 export let errors: Array<IErrorResults> = [];
@@ -9,7 +9,7 @@ export let errors: Array<IErrorResults> = [];
  * @param {boolean} options.strict It requires all the keys from the schema,
  * But it doesn't add extra data that is not listed in the schema
  */
-export const validate = <T extends object, V extends ISchema>(data: T, schema?: V, options?: IOptions): T => {
+export const validate = <T extends object, V extends ISchema>(data: T, schema?: V, options?: IOptions): IResults<T> => {
   let input = [];
 
   // require all check
@@ -30,7 +30,6 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
 
     // check if the type is correct
     if (rule?.type && rule?.type !== typeof value) {
-
       // errors.push(`[${key}] doesn't match with the type [${schema_key.type}]`);
       errors.push({ key, value, desc: `value doesn't meet the schema` });
     }
@@ -43,6 +42,6 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
     if (rule?.length) lengthCheck(key, value, rule);
   }
 
-  if (errors.length > 0) throw errors;
-  return <T>Object.fromEntries(input);
+  if (errors.length > 0) return { error: errors };
+  return { data: <T>Object.fromEntries(input) };
 };

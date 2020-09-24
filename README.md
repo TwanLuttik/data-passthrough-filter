@@ -93,13 +93,30 @@ Additional options for validating your data
 <br>
 <br>
 
-## Error
+## Error handling
 
-The main function will throw an error as an array with objects
+The `validate()` function will return an object with error as key.
 
 <br>
 
-```typescript
+
+```
+{
+  // succeed returns the data
+  data: any;
+
+
+  // When it errors
+  error: object[]
+
+}
+```
+
+
+
+<br>
+
+<!-- ```typescript
 // example, Password has to be longer than 7
 
 try {
@@ -126,4 +143,4 @@ try {
     },
   ];
 }
-```
+``` -->

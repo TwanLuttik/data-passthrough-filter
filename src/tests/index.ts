@@ -5,7 +5,7 @@ import { validate } from '../';
     const data = {
       id: 1,
       email: 'twan@test.com',
-      password: 'twan',
+      password: 'test',
       admin: false
     };
 
@@ -21,8 +21,10 @@ import { validate } from '../';
         overflow: false
       }
     );
+
+    if (val.error) console.log('ERROR', val.error)
+    else console.log(val.data);
     
-    console.log(val);
   } catch (e) {
     console.log('ERROR', e);
   }

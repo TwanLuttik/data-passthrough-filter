@@ -19,3 +19,8 @@ export interface IErrorResults {
   key?: any;
   desc?: string;
 }
+
+export interface IResults<T> {
+  data?: T;
+  error?: IErrorResults[];
+}
