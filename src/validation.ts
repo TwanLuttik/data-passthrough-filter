@@ -43,5 +43,5 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
   }
 
   if (errors.length > 0) return { error: errors };
-  return Object as T;
+  return data;
 };
