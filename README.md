@@ -1,4 +1,4 @@
-# data-passthrough-filter
+# Data Passthrough Filter 1.0
 
 This is a simple object based validator;
 
@@ -120,7 +120,7 @@ The `validate()` function will return an object with error as key.
 <br>
 <br>
 
-_If you have any question, You can contact me at:_
+_If you have any questions, You can contact me on:_
 <br>
 
 **Twitter**: [@TwanLuttik](https://twitter.com/TwanLuttik) \
