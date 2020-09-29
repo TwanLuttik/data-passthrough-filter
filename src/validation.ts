@@ -9,7 +9,7 @@ export let errors: Array<IErrorResults> = [];
  * @param {boolean} options.strict It requires all the keys from the schema,
  * But it doesn't add extra data that is not listed in the schema
  */
-export const validate = <T extends object, V extends ISchema>(data: T, schema?: V, options?: IOptions): IResults | (IResults & T) => {
+export const validate = <T extends object, V extends ISchema>(data: T, schema?: V, options?: IOptions): IResults | (IResults & V) => {
   let input = [];
 
   // require all check
@@ -33,7 +33,6 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
 
     // check if the type is correct
     if (rule?.type && rule?.type !== typeof value) {
-      // errors.push(`[${key}] doesn't match with the type [${schema_key.type}]`);
       errors.push({ key, value, desc: `value doesn't meet the schema` });
     }
 
