@@ -1,14 +1,8 @@
 # data-passthrough-filter
 
-<i>**Note:** This package is not in the release state</i>
+This is a simple object based validator;
 
-<br>
 
-_If you have any question, You can contact me at:_
-<br>
-
-**Twitter**: [@TwanLuttik](https://twitter.com/TwanLuttik) \
-**Discord**: Twan#0001
 
 <br>
 <br>
@@ -115,32 +109,19 @@ The `validate()` function will return an object with error as key.
 
 
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-<!-- ```typescript
-// example, Password has to be longer than 7
+## About
 
-try {
-  // data you want to validate
-  const data = { password: '2020' };
+<br>
+<br>
 
-  // schema
-  const schema: ISchema = {
-    password: {
-      length: {
-        min: 7,
-      },
-    },
-  };
+_If you have any question, You can contact me at:_
+<br>
 
-  // validate and return if valid
-  return validate(data, schema);
-} catch (e) {
-  [
-    {
-      key: 'password',
-      value: '2020',
-      desc: 'The minimun required length is 7',
-    },
-  ];
-}
-``` -->
+**Twitter**: [@TwanLuttik](https://twitter.com/TwanLuttik) \
+**Discord**: Twan#0001
