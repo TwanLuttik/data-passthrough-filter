@@ -1,5 +1,5 @@
 import { IErrorResults, IOptions, IResults, ISchema } from './interfaces';
-import { lengthCheck, requireAll, sanatizeData } from './lib';
+import { lengthCheck, requireAll, requiredCheck, sanatizeData } from './lib';
 
 export let errors: Array<IErrorResults> = [];
 
@@ -15,6 +15,9 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
   // require all check
   if (options?.requireAll) requireAll(data, schema);
 
+  // check for required 
+  requiredCheck(data, schema);
+  
   // sanatize the data if we disallow overflow
   input = options?.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
 
@@ -28,12 +31,16 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
     // check if the key is present in the schema
     if (rule === undefined) continue;
 
+    // if request, Check if present
+    // if (rule?.required && )
+
     // check if the type is correct
     if (rule?.type && rule?.type !== typeof value) {
       // errors.push(`[${key}] doesn't match with the type [${schema_key.type}]`);
       errors.push({ key, value, desc: `value doesn't meet the schema` });
     }
 
+    // Check for nullable
     if (!rule?.nullable && value === null) {
       errors.push({ key, value, desc: 'Value cannot be null' });
     }

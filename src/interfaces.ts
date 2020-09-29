@@ -2,6 +2,7 @@ export interface ISchema {
   [key: string]: {
     type?: 'string' | 'number' | 'boolean' | 'object' | 'array';
     nullable?: boolean;
+    required?: boolean;
     length?: {
       min?: number;
       max?: number;

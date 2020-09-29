@@ -2,8 +2,6 @@
 
 This is a simple object based validator;
 
-
-
 <br>
 <br>
 
@@ -68,7 +66,8 @@ Optional rules for validating your data
 | --------- | -------------------------------------------- | ------------------------------------ |
 | type      | `string` `number` `boolean` `object` `array` | Set for a specific type              |
 | nullable  | `boolean`                                    | nullable applied                     |
-| length    | `{ min: number, max: number } `              | And object with an min and max value |
+| length    | `{ min: number, max: number }`               | And object with an min and max value |
+| required  | `boolean`                                    | required the key                     |
 
 <br>
 <br>
@@ -93,7 +92,6 @@ The `validate()` function will return an object with error as key.
 
 <br>
 
-
 ```
 {
   // succeed returns the data
@@ -105,8 +103,6 @@ The `validate()` function will return an object with error as key.
 
 }
 ```
-
-
 
 <br>
 <br>
