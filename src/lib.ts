@@ -53,8 +53,6 @@ export const requiredCheck = <T>(data: T, schema: ISchema): IErrorResults[] => {
   const entries = Object.entries(schema);
   let errors = []
 
-  entries[1][1];
-
   for (let entry of entries) {
     if (entry[1]?.required && data[entry[0]] === undefined) errors.push({ key: entry[0], desc: `${entry[0]} is not present` });
   }
