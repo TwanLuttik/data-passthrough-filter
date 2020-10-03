@@ -1,7 +1,6 @@
 import { IErrorResults, IOptions, IResults, ISchema } from './interfaces';
 import { lengthCheck, requireAll, requiredCheck, sanatizeData } from './lib';
 
-export let errors: Array<IErrorResults> = [];
 
 /**
  * @param {object} data Your input data as an object with k/v
@@ -11,12 +10,14 @@ export let errors: Array<IErrorResults> = [];
  */
 export const validate = <T extends object, V extends ISchema>(data: T, schema?: V, options?: IOptions): IResults | (IResults & T) => {
   let input = [];
+  let errors: Array<IErrorResults> = [];
+
 
   // require all check
-  if (options?.requireAll) requireAll(data, schema);
+  if (options?.requireAll) errors.concat(requireAll(data, schema))
 
   // check for required 
-  requiredCheck(data, schema);
+  errors.concat(requiredCheck(data, schema));
   
   // sanatize the data if we disallow overflow
   input = options?.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
@@ -42,7 +43,7 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
     }
 
     // Check for the length if its too short or too long
-    if (rule?.length) lengthCheck(key, value, rule);
+    if (rule?.length) errors.concat(lengthCheck(key, value, rule));
   }
 
   if (errors.length > 0) return { error: errors };
