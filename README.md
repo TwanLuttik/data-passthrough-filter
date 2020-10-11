@@ -62,12 +62,12 @@ Optional rules for validating your data
 
 <br>
 
-| Parameter | value                                        | Description                          |
-| --------- | -------------------------------------------- | ------------------------------------ |
-| type      | `string` `number` `boolean` `object` `array` | Set for a specific type              |
-| nullable  | `boolean`                                    | nullable applied                     |
-| length    | `{ min: number, max: number }`               | And object with an min and max value |
-| required  | `boolean`                                    | required the key                     |
+| Parameter | value                                            | Description                          |
+| --------- | ------------------------------------------------ | ------------------------------------ |
+| type      | `string`, `number`, `boolean`, `object`, `array` | Set for a specific type              |
+| nullable  | `boolean`                                        | nullable applied (NaN included) |
+| length    | `{ min: number, max: number }`                   | And object with an min and max value |
+| required  | `boolean`                                        | required the key                     |
 
 <br>
 <br>
