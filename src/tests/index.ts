@@ -12,14 +12,14 @@ import { validate } from '../';
     const val = validate(
       data,
       {
-        id: {},
+        id: {
+          type: 'number'
+        },
         email: {},
         password: {},
+        admin: {}
       },
-      {
-        requireAll: true,
-        overflow: false
-      }
+      {}
     );
 
     if (val.error) console.log('ERROR', val.error)

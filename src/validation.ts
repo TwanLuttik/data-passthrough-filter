@@ -1,7 +1,6 @@
 import { IErrorResults, IOptions, IResults, ISchema } from './interfaces';
 import { lengthCheck, requireAll, requiredCheck, sanatizeData } from './lib';
 
-
 /**
  * @param {object} data Your input data as an object with k/v
  * @param {object} schema Rules for validating the data
@@ -12,13 +11,12 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
   let input = [];
   let errors: Array<IErrorResults> = [];
 
-
   // require all check
-  if (options?.requireAll) errors.concat(requireAll(data, schema))
+  if (options?.requireAll) errors.concat(requireAll(data, schema));
 
-  // check for required 
+  // check for required
   errors.concat(requiredCheck(data, schema));
-  
+
   // sanatize the data if we disallow overflow
   input = options?.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
 
@@ -30,7 +28,8 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
     const rule = schema[key];
 
     // check if the key is present in the schema
-    if (rule === undefined) continue;
+    if (rule === undefined || Object.getOwnPropertyNames(rule).length === 0) continue;
+
 
     // check if the type is correct
     if (rule?.type && rule?.type !== typeof value) {
@@ -38,7 +37,7 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
     }
 
     // Check for nullable
-    if (!rule?.nullable && value === null) {
+    if ((!rule?.nullable && value === null) || isNaN(value)) {
       errors.push({ key, value, desc: 'Value cannot be null' });
     }
 
