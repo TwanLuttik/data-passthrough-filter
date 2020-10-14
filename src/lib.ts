@@ -26,7 +26,7 @@ export const requireAll = (data: object, schema: ISchema) => {
     // if key is not present
     if (data[key] === undefined) errors.push({ desc: `${key} is missing from the input data` });
   }
-
+  
   return errors;
 };
 

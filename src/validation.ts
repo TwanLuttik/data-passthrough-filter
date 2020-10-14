@@ -12,10 +12,10 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
   let errors: Array<IErrorResults> = [];
 
   // require all check
-  if (options?.requireAll) errors.concat(requireAll(data, schema));
-
+  if (options?.requireAll) errors = errors.concat(requireAll(data, schema));
+  
   // check for required
-  errors.concat(requiredCheck(data, schema));
+  errors = errors.concat(requiredCheck(data, schema));
 
   // sanatize the data if we disallow overflow
   input = options?.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
@@ -42,9 +42,10 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
     }
 
     // Check for the length if its too short or too long
-    if (rule?.length) errors.concat(lengthCheck(key, value, rule));
+    if (rule?.length) errors = errors.concat(lengthCheck(key, value, rule));
   }
 
+  
   if (errors.length > 0) return { error: errors };
   return data;
 };

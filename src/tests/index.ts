@@ -4,7 +4,7 @@ import { validate } from '../';
   try {
     const data = {
       email: 'null',
-      password: 'null',
+      password: ''
     };
 
     const val = validate(data, { email: { type: 'string' }, password: { nullable: false, length: { max: 70 } } }, { requireAll: true });
