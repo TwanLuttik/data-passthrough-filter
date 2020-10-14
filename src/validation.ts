@@ -37,7 +37,7 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
     }
 
     // Check for nullable
-    if ((!rule?.nullable && value === null) || isNaN(value)) {
+    if ((rule?.nullable === false && value === null)) {
       errors.push({ key, value, desc: 'Value cannot be null' });
     }
 
