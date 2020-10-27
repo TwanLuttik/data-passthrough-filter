@@ -6,18 +6,23 @@ export const lengthCheck = (key: any, value: any, rule: any): any => {
   // filter for blacklisted properties
   if (typeof value === 'object') return;
 
-  if (value?.length < rule.length?.min) {
-    errors.push({ key, value, desc: `The minimun required length is ${rule.length.min}` });
+  // min length check
+  const MIN = Array.isArray(rule.length) ? rule.length[0] : rule.length.min;
+  if (value?.length < MIN) {
+    errors.push({ key, value, desc: `The minimun required length is ${MIN}` });
   }
-  if (value?.length > rule.length?.max) {
-    errors.push({ key, value, desc: `The maximun required length is ${rule.length.max}` });
+
+  // max length check
+  const MAX = Array.isArray(rule.length) ? rule.length[1] : rule.length.max;
+  if (value?.length > MAX) {
+    errors.push({ key, value, desc: `The maximun required length is ${MAX}` });
   }
-  return errors
+  return errors;
 };
 
 export const requireAll = (data: object, schema: ISchema) => {
   const schemaEntries = Object.entries(schema);
-  let errors = []
+  let errors = [];
 
   // Loop trough the schema
   for (let item of schemaEntries) {
@@ -26,7 +31,7 @@ export const requireAll = (data: object, schema: ISchema) => {
     // if key is not present
     if (data[key] === undefined) errors.push({ desc: `${key} is missing from the input data` });
   }
-  
+
   return errors;
 };
 
@@ -51,11 +56,11 @@ export const sanatizeData = <T>(data: T, schema: ISchema): T => {
  */
 export const requiredCheck = <T>(data: T, schema: ISchema): IErrorResults[] => {
   const entries = Object.entries(schema);
-  let errors = []
+  let errors = [];
 
   for (let entry of entries) {
     if (entry[1]?.required && data[entry[0]] === undefined) errors.push({ key: entry[0], desc: `${entry[0]} is not present` });
   }
-  
+
   return errors;
 };

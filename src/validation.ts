@@ -30,7 +30,6 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
     // check if the key is present in the schema
     if (rule === undefined || Object.getOwnPropertyNames(rule).length === 0) continue;
 
-
     // check if the type is correct
     if (rule?.type && rule?.type !== typeof value) {
       errors.push({ key, value, desc: `value doesn't meet the schema` });

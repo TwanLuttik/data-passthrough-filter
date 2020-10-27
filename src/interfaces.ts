@@ -3,10 +3,12 @@ export interface ISchema {
     type?: 'string' | 'number' | 'boolean' | 'object' | 'array';
     nullable?: boolean;
     required?: boolean;
-    length?: {
-      min?: number;
-      max?: number;
-    };
+    length?:
+      | {
+          min?: number;
+          max?: number;
+        }
+      | [number, number];
   };
 }
 
