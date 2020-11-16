@@ -15,15 +15,10 @@ export interface ISchema {
 export interface IOptions {
   requireAll?: boolean;
   overflow?: boolean;
-}
-
-export interface IErrorResults {
-  value?: string;
-  key?: any;
-  desc?: string;
+  noThrow?: boolean;
 }
 
 export interface IResults {
   [index: string]: any;
-  error?: IErrorResults[];
+  error?: string[];
 }

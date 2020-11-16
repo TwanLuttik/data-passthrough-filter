@@ -81,6 +81,7 @@ Additional options for validating your data
 | ----------- | --------- | ------- | --------------------------------------------------------------- |
 | requiredAll | `boolean` | false   | the input requires every property from the schema               |
 | overflow    | `boolean` | true    | Allowes to return data thats not have been listed in the schema |
+| noThrow     | `boolean` | true    | Allows you to control how you want to throw the error           |
 
 <br>
 <br>
@@ -88,23 +89,12 @@ Additional options for validating your data
 
 ## Error handling
 
-The `validate()` function will return an object with error as key.
+When you call `validate()` function, By default it will throw the error, but you can change that with options `{ noThrow: true }`.
+
+example: `{ errors: ["The maximun required length is 4", "value doesn't meet the schema"]`
 
 <br>
 
-```
-{
-  // succeed returns the data
-  data: any;
-
-
-  // When it errors
-  error: object[]
-
-}
-```
-
-<br>
 <br>
 <br>
 <br>

@@ -1,6 +1,6 @@
-import { IErrorResults, ISchema } from './index';
+import { ISchema } from './index';
 
-export const lengthCheck = (key: any, value: any, rule: any): any => {
+export const lengthCheck = (key: any, value: any, rule: any): string[] => {
   let errors = [];
 
   // filter for blacklisted properties
@@ -9,18 +9,18 @@ export const lengthCheck = (key: any, value: any, rule: any): any => {
   // min length check
   const MIN = Array.isArray(rule.length) ? rule.length[0] : rule.length.min;
   if (value?.length < MIN) {
-    errors.push({ key, value, desc: `The minimun required length is ${MIN}` });
+    errors.push(`The minimun required length is ${MIN}`);
   }
 
   // max length check
   const MAX = Array.isArray(rule.length) ? rule.length[1] : rule.length.max;
   if (value?.length > MAX) {
-    errors.push({ key, value, desc: `The maximun required length is ${MAX}` });
+    errors.push(`The maximun required length is ${MAX}`);
   }
   return errors;
 };
 
-export const requireAll = (data: object, schema: ISchema) => {
+export const requireAll = (data: object, schema: ISchema): string[] => {
   const schemaEntries = Object.entries(schema);
   let errors = [];
 
@@ -29,7 +29,7 @@ export const requireAll = (data: object, schema: ISchema) => {
     const key = item[0];
 
     // if key is not present
-    if (data[key] === undefined) errors.push({ desc: `${key} is missing from the input data` });
+    if (data[key] === undefined) errors.push(`${key} is missing from the input data`);
   }
 
   return errors;
@@ -54,12 +54,12 @@ export const sanatizeData = <T>(data: T, schema: ISchema): T => {
 /**
  * @description Check for required in the schema and check also if the K/V is present
  */
-export const requiredCheck = <T>(data: T, schema: ISchema): IErrorResults[] => {
+export const requiredCheck = <T>(data: T, schema: ISchema): string[] => {
   const entries = Object.entries(schema);
   let errors = [];
 
   for (let entry of entries) {
-    if (entry[1]?.required && data[entry[0]] === undefined) errors.push({ key: entry[0], desc: `${entry[0]} is not present` });
+    if (entry[1]?.required && data[entry[0]] === undefined) errors.push(`${entry[0]} is not present`);
   }
 
   return errors;

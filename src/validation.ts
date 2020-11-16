@@ -1,4 +1,4 @@
-import { IErrorResults, IOptions, IResults, ISchema } from './interfaces';
+import { IOptions, IResults, ISchema } from './interfaces';
 import { lengthCheck, requireAll, requiredCheck, sanatizeData } from './lib';
 
 /**
@@ -9,11 +9,12 @@ import { lengthCheck, requireAll, requiredCheck, sanatizeData } from './lib';
  */
 export const validate = <T extends object, V extends ISchema>(data: T, schema?: V, options?: IOptions): IResults | (IResults & T) => {
   let input = [];
-  let errors: Array<IErrorResults> = [];
+  // let errors: IErrorResults[] = [];
+  let errors: string[] = [];
 
   // require all check
   if (options?.requireAll) errors = errors.concat(requireAll(data, schema));
-  
+
   // check for required
   errors = errors.concat(requiredCheck(data, schema));
 
@@ -32,19 +33,23 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
 
     // check if the type is correct
     if (rule?.type && rule?.type !== typeof value) {
-      errors.push({ key, value, desc: `value doesn't meet the schema` });
+      errors.push(`value doesn't meet the schema`);
     }
 
     // Check for nullable
-    if ((rule?.nullable === false && value === null)) {
-      errors.push({ key, value, desc: 'Value cannot be null' });
+    if (rule?.nullable === false && value === null) {
+      errors.push('Value cannot be null');
     }
 
     // Check for the length if its too short or too long
     if (rule?.length) errors = errors.concat(lengthCheck(key, value, rule));
   }
 
-  
-  if (errors.length > 0) return { error: errors };
-  return data;
+  // check if we have any errors
+  if (errors.length > 0)
+    // Check if we don't want to throw the error
+    if (options?.noThrow) return errors;
+      else throw { errors };
+
+    return data;
 };
