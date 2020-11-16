@@ -49,7 +49,7 @@ export const validate = <T extends object, V extends ISchema>(data: T, schema?: 
   if (errors.length > 0)
     // Check if we don't want to throw the error
     if (options?.noThrow) return errors;
-      else throw { errors };
+      else throw errors;
 
     return data;
 };
