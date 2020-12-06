@@ -1,3 +1,4 @@
+import { IOptions } from 'interfaces';
 import { ISchema } from './index';
 
 export const lengthCheck = (key: any, value: any, rule: any): string[] => {
@@ -20,7 +21,7 @@ export const lengthCheck = (key: any, value: any, rule: any): string[] => {
   return errors;
 };
 
-export const requireAll = (data: object, schema: ISchema): string[] => {
+export const requireAll = (data: any, schema: ISchema): string[] => {
   const schemaEntries = Object.entries(schema);
   let errors = [];
 
@@ -59,8 +60,24 @@ export const requiredCheck = <T>(data: T, schema: ISchema): string[] => {
   let errors = [];
 
   for (let entry of entries) {
-    if (entry[1]?.required && data[entry[0]] === undefined) errors.push(`${entry[0]} is not present`);
+    if (entry[1]?.required && data[entry[0]] === undefined) errors.push(`[${entry[0]}] missing`);
   }
 
   return errors;
+};
+
+
+/**
+ * @descrption This handlers how we return data or throw errors
+ */
+export type ReturnHandlerType<T extends object, O extends IOptions> = O['noThrow'] extends true ? string[] : {[K in keyof T]};
+export const returnHandler = <T extends object, O extends IOptions>(options: IOptions, errors: string[], data: any): ReturnHandlerType<T, O> => {
+  // check if we have any errors
+  if (!errors.length) return data as any;
+
+  // if we don't wanna trow an error, We return just an Array<string>
+  if (options?.noThrow === true) return errors as any;
+  
+  // else throw the error
+  else throw errors;
 };

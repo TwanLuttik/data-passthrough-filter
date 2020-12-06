@@ -17,8 +17,3 @@ export interface IOptions {
   overflow?: boolean;
   noThrow?: boolean;
 }
-
-export interface IResults {
-  [index: string]: any;
-  error?: string[];
-}

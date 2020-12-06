@@ -3,21 +3,19 @@ import { validate } from '../';
 (function () {
   try {
     const data = {
-      email: '31233',
-      password: '2233',
+      email: 2,
     };
 
     const val = validate(
       data,
       {
-        email: { length: [2, 4] },
-        password: { length: [2, 4], type: 'string' },
-      },
-      { noThrow: false }
+        email: { type: 'number' },
+        password: { type: 'number', required: true },
+        data: { type: 'number' },
+      }
     );
 
-    if (val.error) console.log('ERROR', val.error);
-    else console.log(val);
+    console.log(val);
   } catch (e) {
     console.log('- ERROR', e);
   }

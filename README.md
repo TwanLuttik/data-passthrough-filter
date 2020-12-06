@@ -81,7 +81,7 @@ Additional options for validating your data
 | ----------- | --------- | ------- | --------------------------------------------------------------- |
 | requiredAll | `boolean` | false   | the input requires every property from the schema               |
 | overflow    | `boolean` | true    | Allowes to return data thats not have been listed in the schema |
-| noThrow     | `boolean` | true    | Allows you to control how you want to throw the error           |
+| noThrow     | `boolean` | false    | Allows you to control how you want to throw the error           |
 
 <br>
 <br>
