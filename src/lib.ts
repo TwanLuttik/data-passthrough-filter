@@ -1,4 +1,4 @@
-import { IOptions } from 'interfaces';
+import { IOptions } from './interfaces';
 import { ISchema } from './index';
 
 export const lengthCheck = (key: any, value: any, rule: any): string[] => {
