@@ -1,4 +1,4 @@
-# Data Passthrough Filter 1.1.0
+# Data Passthrough Filter 1.2.*
 
 This is a simple object based validator;
 
