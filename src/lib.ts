@@ -67,17 +67,21 @@ export const requiredCheck = <T>(data: T, schema: ISchema): string[] => {
 };
 
 
+// Return type hanlder
+export type ReturnHandlerType<S extends ISchema, O extends IOptions> = O['noThrow'] extends true
+  ? { errors: string[] }
+  : { [K in keyof S]: any } & { errors: string[] };
+
+
 /**
  * @descrption This handlers how we return data or throw errors
  */
-export type ReturnHandlerType<S extends ISchema, O extends IOptions> = O['noThrow'] extends true ? string[] : {[K in keyof S]: any };
 export const returnHandler = <S extends ISchema, O extends IOptions>(options: IOptions, errors: string[], data: any): ReturnHandlerType<S, O> => {
   // check if we have any errors
   if (!errors.length) return data as any;
 
   // if we don't wanna trow an error, We return just an Array<string>
-  if (options?.noThrow === true) return errors as any;
-  
+  if (options?.noThrow === true) return { errors } as any;
   // else throw the error
   else throw errors;
 };

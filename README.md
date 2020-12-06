@@ -89,14 +89,13 @@ Additional options for validating your data
 
 ## Error handling
 
-When you call `validate()` function, By default it will throw the error, but you can change that with options `{ noThrow: true }`.
+When you call `validate()` function, By default it will throw the error as an `string[]`, But you can change that with the option `{ noThrow: true }`, And it will return the error as `{ errors: string[] }`
 
-example: `{ errors: ["The maximun required length is 4", "value doesn't meet the schema"]`
-
-<br>
 
 <br>
-<br>
+
+*example: `{ errors: ["The maximun required length is 4", "value doesn't meet the schema"]`*
+
 <br>
 <br>
 <br>
