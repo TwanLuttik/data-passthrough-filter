@@ -8,7 +8,7 @@ import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerTyp
  * But it doesn't add extra data that is not listed in the schema
  */
 
-export const validate = <T extends object, V extends ISchema, O extends IOptions>(data: T, schema?: V, options?: IOptions): ReturnHandlerType<V, O> => {
+export const validate = <T extends object, S extends ISchema, O extends IOptions>(data: T, schema?: S, options?: IOptions): ReturnHandlerType<S, O> => {
   let input = [];
   let errors: string[] = [];
 

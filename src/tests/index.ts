@@ -10,12 +10,12 @@ import { validate } from '../';
       data,
       {
         email: { type: 'number' },
-        password: { type: 'number', required: true },
+        password: { type: 'number', required: false },
         data: { type: 'number' },
       }
     );
 
-    console.log(val);
+    console.log(val.email);
   } catch (e) {
     console.log('- ERROR', e);
   }
