@@ -8,7 +8,11 @@ import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerTyp
  * But it doesn't add extra data that is not listed in the schema
  */
 
-export const validate = <T extends object, S extends ISchema, O extends IOptions>(data: T, schema?: S, options?: IOptions): ReturnHandlerType<S, O> => {
+export const validate = <T extends object, S extends ISchema, O extends IOptions>(
+  data: T,
+  schema?: S,
+  options?: IOptions
+): ReturnHandlerType<S, O> => {
   let input = [];
   let errors: string[] = [];
 
@@ -44,9 +48,24 @@ export const validate = <T extends object, S extends ISchema, O extends IOptions
     }
 
     // check if the type is correct
-    if (rule?.type && rule?.type !== typeof value) {
-      errors.push(`[${key}] type is not a [${rule?.type}], Received a [${typeof value}]`);
-      continue;
+    if (rule?.type) {
+
+      // Check for NaN
+      if (isNaN(value) === true) {
+        errors.push(`value cannot be NaN`);
+        continue;
+      }
+
+      // Check if undefined
+      if (value === undefined) {
+        errors.push(`value cannot be undefined`);
+        continue;
+      }
+
+      if (rule.type !== typeof value) {
+        errors.push(`[${key}] type is not a [${rule?.type}], Received a [${typeof value}]`);
+        continue;
+      }
     }
 
     // Check for the length if its too short or too long
