@@ -17,7 +17,7 @@ export const validate = <T extends object, S extends ISchema, O extends IOptions
   let errors: string[] = [];
 
   // Check if we have input data
-  if (!Object.keys(data).length) {
+  if (!data || !Object.keys(data).length) {
     errors.push('Input data is empty');
     return returnHandler(options, errors, data);
   }

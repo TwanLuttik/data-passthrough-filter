@@ -7,7 +7,7 @@ import { validate } from '../';
     };
 
     const val = validate(
-      data,
+      undefined,
       {
         email: { type: 'number' },
       },
