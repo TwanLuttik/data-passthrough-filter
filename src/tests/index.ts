@@ -3,16 +3,23 @@ import { validate } from '../';
 (function () {
   try {
     const data = {
-      email: undefined
+      email: null,
+      password: 'dsadsa'
     };
 
     const val = validate(
-      undefined,
-      {
-        email: { type: 'number' },
-      },
-      { noThrow: true }
-    );
+			data,
+			{
+				email: {
+					type: 'string',
+				},
+				password: {
+					type: 'string',
+					length: { max: 70 },
+				},
+			},
+			{ requireAll: true }
+		);
     
     console.log({...val});
     

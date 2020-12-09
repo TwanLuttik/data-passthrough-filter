@@ -49,20 +49,8 @@ export const validate = <T extends object, S extends ISchema, O extends IOptions
 
     // check if the type is correct
     if (rule?.type) {
-
-      // Check for NaN
-      if (isNaN(value) === true) {
-        errors.push(`value cannot be NaN`);
-        continue;
-      }
-
-      // Check if undefined
-      if (value === undefined) {
-        errors.push(`value cannot be undefined`);
-        continue;
-      }
-
-      if (rule.type !== typeof value) {
+      if (rule.type === typeof value) continue;
+      else if (rule.type !== typeof value) {
         errors.push(`[${key}] type is not a [${rule?.type}], Received a [${typeof value}]`);
         continue;
       }
