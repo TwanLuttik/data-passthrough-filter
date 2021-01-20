@@ -3,25 +3,23 @@ import { validate } from '../';
 (function () {
   try {
     const data = {
-      email: null,
-      password: 'dsadsa'
+      price: 'expensive',
+      name: 'twan',
+      lazy: false
     };
 
     const val = validate(
 			data,
 			{
-				email: {
-					type: 'string',
-				},
-				password: {
-					type: 'string',
-					length: { max: 70 },
-				},
+        price: { type: 'string' },
+        lazy: {}
 			},
-			{ requireAll: true }
+			{ overflow: false }
 		);
-    
-    console.log({...val});
+		
+		if (val.errors) console.log('test');
+		
+    console.log('values', {...val});
     
   } catch (e) {
     console.log('- ERROR', e);

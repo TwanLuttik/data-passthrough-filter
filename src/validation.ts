@@ -61,5 +61,5 @@ export const validate = <T extends object, S extends ISchema, O extends IOptions
   }
 
   // Return the data
-  return returnHandler(options, errors, data);
+  return returnHandler(options, errors, Object.fromEntries(input));
 };
