@@ -1,6 +1,6 @@
 {
   "name": "data-passthrough-filter",
-  "version": "1.2.7",
+  "version": "2.0.0-beta.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
@@ -26,8 +26,9 @@
   "scripts": {
     "dev": "tsc-watch --onSuccess \"node ./dist/index.js\"",
     "test": "tsc-watch --onSuccess \"node ./dist/tests/index.js\"",
-    "build": "rm -rf ./build/* && rollup --config",
-    "release": ""
+    "build": "rm -rf ./dist/* && rollup --config",
+    "release": "",
+    "release-beta": "npm publish --tag beta"
   },
   "bugs": {
     "url": "https://github.com/TwanLuttik/data-passthrough-filter/issues"
