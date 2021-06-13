@@ -1,4 +1,4 @@
-import { SchemaBase, ISchema } from './interfaces';
+import { SchemaBase } from './interfaces';
 
 export class Check {
   private options: SchemaBase;
@@ -29,10 +29,3 @@ export class Check {
 }
 
 export let check = () => new Check();
-
-// const b = {
-//   x1: check().type('number').length({ max: 50 }),
-//   x2: check().type('string').required(false).length([4, 5]),
-// };
-
-// console.log(b.x1);

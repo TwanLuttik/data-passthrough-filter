@@ -109,4 +109,3 @@ _If you have any questions, You can contact me on:_
 <br>
 
 **Twitter**: [@TwanLuttik](https://twitter.com/TwanLuttik) \
-**Discord**: Twan#0001
