@@ -1,15 +1,17 @@
 export interface ISchema {
-  [key: string]: {
-    type?: 'string' | 'number' | 'boolean' | 'object' | 'array';
-    nullable?: boolean;
-    required?: boolean;
-    length?:
-      | {
-          min?: number;
-          max?: number;
-        }
-      | [number, number];
-  };
+  [key: string]: SchemaBase;
+}
+
+export interface SchemaBase {
+  type?: 'string' | 'number' | 'boolean' | 'object' | 'array';
+  nullable?: boolean;
+  required?: boolean;
+  length?:
+    | {
+        min?: number;
+        max?: number;
+      }
+    | [number, number];
 }
 
 export interface IOptions {

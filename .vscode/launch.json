@@ -5,11 +5,21 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "normal debug",
       "command": "npm test",
       "request": "launch",
       "type": "node-terminal",
       // "type": "node",
-      "name": "data-passthrough-filter",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+    },
+    {
+      "name": "tests debug",
+      "command": "yarn test",
+      "request": "launch",
+      "type": "node-terminal",
+      // "type": "node",
       "skipFiles": [
         "<node_internals>/**"
       ],

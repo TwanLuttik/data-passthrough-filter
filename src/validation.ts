@@ -10,7 +10,7 @@ import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerTyp
 
 export const validate = <T extends object, S extends ISchema, O extends IOptions>(
   data: T,
-  schema?: S,
+  schema?: any,
   options?: IOptions
 ): ReturnHandlerType<S, O> => {
   let input = [];
@@ -36,7 +36,7 @@ export const validate = <T extends object, S extends ISchema, O extends IOptions
     // variables
     const key = item[0];
     const value = item[1];
-    const rule = schema[key];
+    const rule = schema[key].options || schema[key];
 
     // check if the key is present in the schema
     if (rule === undefined || Object.getOwnPropertyNames(rule).length === 0) continue;
@@ -47,13 +47,12 @@ export const validate = <T extends object, S extends ISchema, O extends IOptions
       continue;
     }
 
-    // check if the type is correct
-    if (rule?.type) {
-      if (rule.type === typeof value) continue;
-      else if (rule.type !== typeof value) {
-        errors.push(`[${key}] type is not a [${rule?.type}], Received a [${typeof value}]`);
-        continue;
-      }
+    // Check if type is correct with the schema
+    if (rule.type === typeof value) continue;
+    // Else push error
+    else if (rule.type !== typeof value) {
+      errors.push(`[${key}] type is not a [${rule?.type}], Received a [${typeof value}]`);
+      continue;
     }
 
     // Check for the length if its too short or too long

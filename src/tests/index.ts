@@ -1,4 +1,4 @@
-import { validate } from '../';
+import { check, validate } from '../';
 
 (function () {
   try {
@@ -11,17 +11,16 @@ import { validate } from '../';
     const val = validate(
 			data,
 			{
-        price: { type: 'string' },
-        lazy: {}
+        price: check().type('string')
 			},
 			{ overflow: false }
 		);
-		
+
 		if (val.errors) console.log('test');
 		
-    console.log('values', {...val});
+    console.log('success =>', val);
     
   } catch (e) {
-    console.log('- ERROR', e);
+    console.log('error =>', e);
   }
 })();
