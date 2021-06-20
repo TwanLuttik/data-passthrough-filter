@@ -3,7 +3,7 @@
     "sourceMap": true,
 
     "target": "ES2019",
-    "module": "ES2015",
+    "module": "CommonJS",
     "declaration": true,
     "strictFunctionTypes": false,
     "esModuleInterop": true,   
@@ -12,6 +12,5 @@
     "baseUrl": "./src",
     "outDir": "./dist"
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["./src/tests/**/*.ts"]
+  "include": ["./src/**/*"]
 }

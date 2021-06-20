@@ -1,4 +1,4 @@
-import { IOptions, ISchema } from './interfaces';
+import { ErrorType, IOptions, ISchema } from './interfaces';
 import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerType, sanatizeData } from './lib';
 
 /**
@@ -8,17 +8,13 @@ import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerTyp
  * But it doesn't add extra data that is not listed in the schema
  */
 
-export const validate = <T extends object, S extends ISchema, O extends IOptions>(
-  data: T,
-  schema?: any,
-  options?: IOptions
-): ReturnHandlerType<S, O> => {
-  let input = [];
-  let errors: string[] = [];
+export const validate = <S extends ISchema, O extends IOptions>(data: any, schema?: any, options?: IOptions): ReturnHandlerType<S, O> => {
+  let inputData = [];
+  let errors: ErrorType[] = [];
 
   // Check if we have input data
   if (!data || !Object.keys(data).length) {
-    errors.push('Input data is empty');
+    errors.push({ key: 'none', reason: 'input data is empty' });
     return returnHandler(options, errors, data);
   }
 
@@ -29,21 +25,26 @@ export const validate = <T extends object, S extends ISchema, O extends IOptions
   errors = errors.concat(requiredCheck(data, schema));
 
   // sanatize the data if we disallow overflow
-  input = options?.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
+  inputData = options?.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
 
   // iterate over the data we pass trough
-  for (let item of input) {
+  for (let item of inputData) {
     // variables
     const key = item[0];
     const value = item[1];
-    const rule = schema[key].options || schema[key];
+
+    // skip if there is no schema configuration
+    if (!schema[key]) continue;
+
+    // Get the rules of the key
+    const rule = schema[key]?.options || schema[key];
 
     // check if the key is present in the schema
     if (rule === undefined || Object.getOwnPropertyNames(rule).length === 0) continue;
 
     // check if value is not null
     if (rule?.nullable === false && value === null) {
-      errors.push(`[${key}] type cannot be null`);
+      errors.push({ key, reason: 'cannot be null' });
       continue;
     }
 
@@ -51,7 +52,7 @@ export const validate = <T extends object, S extends ISchema, O extends IOptions
     if (rule.type === typeof value) continue;
     // Else push error
     else if (rule.type !== typeof value) {
-      errors.push(`[${key}] type is not a [${rule?.type}], Received a [${typeof value}]`);
+      errors.push({ key, reason: 'type should be ' + rule.type });
       continue;
     }
 
@@ -60,5 +61,5 @@ export const validate = <T extends object, S extends ISchema, O extends IOptions
   }
 
   // Return the data
-  return returnHandler(options, errors, Object.fromEntries(input));
+  return returnHandler(options, errors, Object.fromEntries(inputData));
 };

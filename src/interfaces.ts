@@ -19,3 +19,9 @@ export interface IOptions {
   overflow?: boolean;
   noThrow?: boolean;
 }
+
+export interface ErrorType {
+  key: string;
+  reason: string;
+}
+[];
