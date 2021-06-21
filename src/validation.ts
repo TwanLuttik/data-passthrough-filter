@@ -8,14 +8,14 @@ import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerTyp
  * But it doesn't add extra data that is not listed in the schema
  */
 
-export const validate = <S extends ISchema, O extends IOptions>(data: any, schema?: any, options?: IOptions): ReturnHandlerType<S, O> => {
+export const validate = <T extends ISchema, S extends IOptions>(data: any, schema?: T, options?: S): ReturnHandlerType<T> => {
   let inputData = [];
   let errors: ErrorType[] = [];
 
   // Check if we have input data
   if (!data || !Object.keys(data).length) {
     errors.push({ key: 'none', reason: 'input data is empty' });
-    return returnHandler(options, errors, data);
+    return returnHandler(errors, data);
   }
 
   // require all check
@@ -37,7 +37,7 @@ export const validate = <S extends ISchema, O extends IOptions>(data: any, schem
     if (!schema[key]) continue;
 
     // Get the rules of the key
-    const rule = schema[key]?.options || schema[key];
+    const rule = schema[key];
 
     // check if the key is present in the schema
     if (rule === undefined || Object.getOwnPropertyNames(rule).length === 0) continue;
@@ -61,5 +61,5 @@ export const validate = <S extends ISchema, O extends IOptions>(data: any, schem
   }
 
   // Return the data
-  return returnHandler(options, errors, Object.fromEntries(inputData));
+  return returnHandler(errors, Object.fromEntries(inputData));
 };

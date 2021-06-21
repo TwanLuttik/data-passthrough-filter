@@ -26,7 +26,7 @@
   "scripts": {
     "dev": "tsc-watch --onSuccess \"node ./dist/index.js\"",
     "test": "cd tests && tsc-watch --onSuccess \"node ./dist/index.js\"",
-    "convert-to-js": "./node_modules/.bin/babel src/ --out-dir lib --extensions .ts",
+    "convert-to-js": "./node_modules/.bin/babel dist/ --out-dir lib --extensions .ts",
     "build": "rm -rf ./dist && yarn convert-to-js && rollup --config",
     "release": "npm publish",
     "release-beta": "npm publish --tag beta"

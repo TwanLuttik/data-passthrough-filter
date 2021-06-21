@@ -28,4 +28,4 @@ export class Check {
   }
 }
 
-export let check = () => new Check();
+export let check = (): any => new Check();

@@ -1,5 +1,5 @@
 export interface ISchema {
-  [key: string]: SchemaBase;
+  [string: string]: SchemaBase;
 }
 
 export interface SchemaBase {
@@ -17,7 +17,6 @@ export interface SchemaBase {
 export interface IOptions {
   requireAll?: boolean;
   overflow?: boolean;
-  noThrow?: boolean;
 }
 
 export interface ErrorType {
