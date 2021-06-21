@@ -1,5 +1,4 @@
-import { ErrorType, IOptions } from './interfaces';
-import { ISchema } from './index';
+import { ErrorType, ISchema } from './interfaces';
 
 export const lengthCheck = (key: any, value: any, rule: any): ErrorType[] => {
   let errors = [];

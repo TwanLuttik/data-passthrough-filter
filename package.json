@@ -1,6 +1,6 @@
 {
   "name": "data-passthrough-filter",
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-beta.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
@@ -26,8 +26,12 @@
   "scripts": {
     "dev": "tsc-watch --onSuccess \"node ./dist/index.js\"",
     "test": "cd tests && tsc-watch --onSuccess \"node ./dist/index.js\"",
-    "convert-to-js": "./node_modules/.bin/babel dist/ --out-dir lib --extensions .ts",
-    "build": "rm -rf ./dist && yarn convert-to-js && rollup --config",
+    "clean": "rm -rf ./build ./dist ./lib",
+    "build": "yarn clean && tsc && yarn babel && cp ./build/*.d.ts ./dist",
+    "babel": "./node_modules/.bin/babel build/ --out-dir dist",
+    "rollup": "rollup --config",
+    "convert-to-js": "./node_modules/.bin/babel src/ --out-dir lib --extensions .ts",
+    "build-old": "tsc && yarn convert-to-js && rm -rf dist/ && rollup --config",
     "release": "npm publish",
     "release-beta": "npm publish --tag beta"
   },
@@ -41,10 +45,12 @@
     "@babel/plugin-transform-typescript": "^7.14.6",
     "@babel/preset-env": "^7.14.5",
     "@babel/preset-typescript": "^7.14.5",
+    "@rollup/plugin-typescript": "^8.2.1",
     "babel-preset-minify": "^0.5.1",
     "rollup": "^2.51.2",
     "rollup-plugin-terser": "^7.0.2",
     "tsc-watch": "^4.2.9",
+    "tslib": "^2.3.0",
     "typescript": "^4.3.4"
   }
 }
