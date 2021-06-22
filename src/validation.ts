@@ -37,27 +37,27 @@ export const validate = <T extends ISchema, S extends IOptions>(data: any, schem
     if (!schema[key]) continue;
 
     // Get the rules of the key
-    const rule = schema[key];
+    const rules = schema[key]['options'];
 
     // check if the key is present in the schema
-    if (rule === undefined || Object.getOwnPropertyNames(rule).length === 0) continue;
+    if (rules === undefined || Object.getOwnPropertyNames(rules).length === 0) continue;
 
     // check if value is not null
-    if (rule?.nullable === false && value === null) {
+    if (rules?.nullable === false && value === null) {
       errors.push({ key, reason: 'cannot be null' });
       continue;
     }
 
     // Check if type is correct with the schema
-    if (rule.type === typeof value) continue;
+    if (rules.type === typeof value) continue;
     // Else push error
-    else if (rule.type !== typeof value) {
-      errors.push({ key, reason: 'type should be ' + rule.type });
+    else if (rules.type !== typeof value) {
+      errors.push({ key, reason: 'type should be ' + rules.type });
       continue;
     }
 
     // Check for the length if its too short or too long
-    if (rule?.length) errors = errors.concat(lengthCheck(key, value, rule));
+    if (rules?.length) errors = errors.concat(lengthCheck(key, value, rules));
   }
 
   // Return the data

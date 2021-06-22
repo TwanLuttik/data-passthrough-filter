@@ -29,7 +29,7 @@ export const requireAll = (data: any, schema: ISchema): ErrorType[] => {
     const key = item[0];
 
     // if key is not present
-    if (data[key] === undefined) errors.push({ key, reason: 'is missing' });
+    if (data[key] === undefined) errors.push({ key, reason: key + ' is missing' });
   }
 
   return errors;
@@ -59,7 +59,7 @@ export const requiredCheck = <T>(data: T, schema: ISchema): ErrorType[] => {
   let errors = [];
 
   for (let entry of entries) {
-    if (entry[1]?.required && data[entry[0]] === undefined) errors.push(`[${entry[0]}] missing`);
+    if (entry[1]?.required && data[entry[0]] === undefined) errors.push({ key: entry[0], reason: `${entry[0]} is missing` });
   }
 
   return errors;

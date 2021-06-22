@@ -108,4 +108,4 @@ When you call `validate()` function, By default it will throw the error as an `s
 _If you have any questions, You can contact me on:_
 <br>
 
-**Twitter**: [@TwanLuttik](https://twitter.com/TwanLuttik) \
+**Twitter**: [@TwanLuttik](https://twitter.com/TwanLuttik)

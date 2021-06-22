@@ -25,9 +25,9 @@
   },
   "scripts": {
     "dev": "tsc-watch --onSuccess \"node ./dist/index.js\"",
-    "test": "cd tests && tsc-watch --onSuccess \"node ./dist/index.js\"",
+    "test": "tsc-watch --onSuccess \"node ./build/index.test.js\"",
     "clean": "rm -rf ./build ./dist ./lib",
-    "build": "yarn clean && tsc && yarn babel && cp ./build/*.d.ts ./dist",
+    "build": "yarn clean && tsc --project tsconfig.tests.json && yarn babel && cp ./build/*.d.ts ./dist",
     "babel": "./node_modules/.bin/babel build/ --out-dir dist",
     "rollup": "rollup --config",
     "convert-to-js": "./node_modules/.bin/babel src/ --out-dir lib --extensions .ts",

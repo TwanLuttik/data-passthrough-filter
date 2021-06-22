@@ -12,13 +12,38 @@ export class Check {
     return this;
   }
 
-  public required(v: boolean) {
-    this.options.required = v;
+  public string() {
+    this.options.type = 'string';
     return this;
   }
 
-  public nullable(v: boolean) {
-    this.options.nullable = v;
+  public number() {
+    this.options.type = 'number';
+    return this;
+  }
+
+  public boolean() {
+    this.options.type = 'boolean';
+    return this;
+  }
+
+  public object() {
+    this.options.type = 'object';
+    return this;
+  }
+
+  public array() {
+    this.options.type = 'array';
+    return this;
+  }
+
+  public required(v?: boolean) {
+    this.options.required = v || true;
+    return this;
+  }
+
+  public nullable(v?: boolean) {
+    this.options.nullable = v || true;
     return this;
   }
 
@@ -28,4 +53,4 @@ export class Check {
   }
 }
 
-export let check = (): any => new Check();
+export let check = () => new Check();
