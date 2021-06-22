@@ -1,6 +1,6 @@
 {
   "name": "data-passthrough-filter",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
@@ -33,7 +33,7 @@
     "convert-to-js": "./node_modules/.bin/babel src/ --out-dir lib --extensions .ts",
     "build-old": "tsc && yarn convert-to-js && rm -rf dist/ && rollup --config",
     "release": "npm publish",
-    "release-beta": "npm publish --tag beta"
+    "release-beta": "yarn build && npm publish --tag beta"
   },
   "bugs": {
     "url": "https://github.com/TwanLuttik/data-passthrough-filter/issues"

@@ -11,7 +11,6 @@ const test = () => {
       password: check().string().nullable(false),
     };
 
-    // @ts-ignore
     const val = validate(d, schem);
     console.log(val);
   } catch (error) {
