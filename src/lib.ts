@@ -1,4 +1,4 @@
-import { ErrorType, ISchema } from './interfaces';
+import { ErrorType, ISchema, SchemaBase } from './interfaces';
 
 export const lengthCheck = (key: any, value: any, rule: any): ErrorType[] => {
   let errors = [];
@@ -66,16 +66,15 @@ export const requiredCheck = <T>(data: T, schema: ISchema): ErrorType[] => {
 };
 
 // Return type handler
-export type ReturnHandlerType<S extends ISchema> = S;
+export type ReturnHandlerType<S extends ISchema> = { [K in keyof S]: any };
+
 
 /**
  * @descrption This handlers how we return data or throw errors
  */
 export const returnHandler = <S extends ISchema>(errors: ErrorType[], data: any): ReturnHandlerType<S> => {
-
   // return the data if we have no validation errors
   if (!errors.length) return data;
-
   // throw the errors
   else throw errors;
 };

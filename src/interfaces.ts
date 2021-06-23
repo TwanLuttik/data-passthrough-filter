@@ -1,4 +1,4 @@
-import { Check } from './check';
+import { Check } from "check";
 
 export interface ISchema {
   [index: string]: SchemaBase | Check;

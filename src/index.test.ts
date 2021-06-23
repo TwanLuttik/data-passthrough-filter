@@ -11,7 +11,12 @@ const test = () => {
       password: check().string().nullable(false),
     };
 
+    // schem.email
+
     const val = validate(d, schem);
+
+    // val.password;
+
     console.log(val);
   } catch (error) {
     console.log('error', error);
