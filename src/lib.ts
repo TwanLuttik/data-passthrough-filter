@@ -59,7 +59,7 @@ export const requiredCheck = <T>(data: T, schema: ISchema): ErrorType[] => {
   let errors = [];
 
   for (let entry of entries) {
-    if (entry[1]?.required && data[entry[0]] === undefined) errors.push({ key: entry[0], reason: `${entry[0]} is missing` });
+    if (!!entry[1]['options'].required && data[entry[0]] === undefined) errors.push({ key: entry[0], reason: `${entry[0]} is required` });
   }
 
   return errors;
