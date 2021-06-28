@@ -1,5 +1,5 @@
-import { IOptions, ISchema } from './interfaces';
-import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerType, sanatizeData } from './lib';
+import { ErrorType, IOptions, ISchema, Type } from './interfaces';
+import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerType, sanatizeData, valueType } from './lib';
 
 /**
  * @param {object} data Your input data as an object with k/v
@@ -8,18 +8,13 @@ import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerTyp
  * But it doesn't add extra data that is not listed in the schema
  */
 
-export const validate = <T extends object, S extends ISchema, O extends IOptions>(
-  data: T,
-  schema?: S,
-  options?: IOptions
-): ReturnHandlerType<S, O> => {
-  let input = [];
-  let errors: string[] = [];
+export const validate = <T extends ISchema, S extends IOptions>(data: any, schema?: T, options?: S): ReturnHandlerType<T> => {
+  let inputData = [];
+  let errors: ErrorType[] = [];
 
   // Check if we have input data
   if (!data || !Object.keys(data).length) {
-    errors.push('Input data is empty');
-    return returnHandler(options, errors, data);
+    return returnHandler<T>(errors, data);
   }
 
   // require all check
@@ -29,37 +24,41 @@ export const validate = <T extends object, S extends ISchema, O extends IOptions
   errors = errors.concat(requiredCheck(data, schema));
 
   // sanatize the data if we disallow overflow
-  input = options?.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
+  inputData = options?.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
 
   // iterate over the data we pass trough
-  for (let item of input) {
-    // variables
+  for (let item of inputData) {
+    // Varialbes
     const key = item[0];
-    const value = item[1];
-    const rule = schema[key];
+    const value: Type = item[1];
+
+    // Skip if there is no schema for the key
+    if (!schema[key]) continue;
+
+    const rules = schema[key]['options'];
+
+    // Skip if the schema is present but the key not
+    if (rules && value === undefined) continue;
 
     // check if the key is present in the schema
-    if (rule === undefined || Object.getOwnPropertyNames(rule).length === 0) continue;
+    if (rules === undefined || Object.getOwnPropertyNames(rules).length === 0) continue;
 
     // check if value is not null
-    if (rule?.nullable === false && value === null) {
-      errors.push(`[${key}] type cannot be null`);
+    if (rules?.nullable === false && value === null) {
+      errors.push({ key, reason: 'cannot be null' });
       continue;
     }
 
-    // check if the type is correct
-    if (rule?.type) {
-      if (rule.type === typeof value) continue;
-      else if (rule.type !== typeof value) {
-        errors.push(`[${key}] type is not a [${rule?.type}], Received a [${typeof value}]`);
-        continue;
-      }
+    // Else push error
+    if (rules.type !== valueType(value)) {
+      errors.push({ key, reason: 'type should be ' + rules.type });
+      continue;
     }
 
     // Check for the length if its too short or too long
-    if (rule?.length) errors = errors.concat(lengthCheck(key, value, rule));
+    if (rules?.length) errors = errors.concat(lengthCheck(key, value, rules.length));
   }
 
   // Return the data
-  return returnHandler(options, errors, Object.fromEntries(input));
+  return returnHandler(errors, Object.fromEntries(inputData));
 };

@@ -1,27 +1,33 @@
-import { IOptions } from './interfaces';
-import { ISchema } from './index';
+import { ErrorType, ISchema, Type } from './interfaces';
 
-export const lengthCheck = (key: any, value: any, rule: any): string[] => {
-  let errors = [];
+export const lengthCheck = (key: any, value: any, rule: any): ErrorType[] => {
+  let errors: ErrorType[] = [];
+  const type = valueType(value);
 
   // filter for blacklisted properties
-  if (typeof value === 'object') return;
+  if (type === 'object') return;
 
-  // min length check
-  const MIN = Array.isArray(rule.length) ? rule.length[0] : rule.length.min;
-  if (value?.length < MIN) {
-    errors.push(`The minimun required length is ${MIN}`);
+  // get the value size depending what type it is
+  const valueSize = type === 'number' ? value : value.length;
+
+  // Check for min size
+  const minSizeRule = Array.isArray(rule) ? rule[0] : rule.min;
+  if (minSizeRule !== null && valueSize < minSizeRule) {
+    errors.push({ key, reason: `minimun length is ${minSizeRule}` });
+    return errors;
   }
 
-  // max length check
-  const MAX = Array.isArray(rule.length) ? rule.length[1] : rule.length.max;
-  if (value?.length > MAX) {
-    errors.push(`The maximun required length is ${MAX}`);
+  // Check for max size
+  const maxSizeRule = Array.isArray(rule) ? rule[1] : rule.max;
+  if (maxSizeRule !== null && valueSize > maxSizeRule) {
+    errors.push({ key, reason: `maximum length is ${maxSizeRule}` });
+    return errors;
   }
+
   return errors;
 };
 
-export const requireAll = (data: any, schema: ISchema): string[] => {
+export const requireAll = (data: any, schema: ISchema): ErrorType[] => {
   const schemaEntries = Object.entries(schema);
   let errors = [];
 
@@ -30,7 +36,7 @@ export const requireAll = (data: any, schema: ISchema): string[] => {
     const key = item[0];
 
     // if key is not present
-    if (data[key] === undefined) errors.push(`${key} is missing from the input data`);
+    if (data[key] === undefined) errors.push({ key, reason: key + ' is missing' });
   }
 
   return errors;
@@ -55,33 +61,46 @@ export const sanatizeData = <T>(data: T, schema: ISchema): T => {
 /**
  * @description Check for required in the schema and check also if the K/V is present
  */
-export const requiredCheck = <T>(data: T, schema: ISchema): string[] => {
+export const requiredCheck = <T>(data: T, schema: ISchema): ErrorType[] => {
   const entries = Object.entries(schema);
   let errors = [];
 
   for (let entry of entries) {
-    if (entry[1]?.required && data[entry[0]] === undefined) errors.push(`[${entry[0]}] missing`);
+    if (!!entry[1]['options'].required && data[entry[0]] === undefined) errors.push({ key: entry[0], reason: `${entry[0]} is required` });
   }
 
   return errors;
 };
 
-
-// Return type hanlder
-export type ReturnHandlerType<S extends ISchema, O extends IOptions> = O['noThrow'] extends true
-  ? { errors: string[] }
-  : { [K in keyof S]: any } & { errors: string[] };
-
+// Return type handler
+export type ReturnHandlerType<S extends ISchema> = { [K in keyof S]: any };
 
 /**
  * @descrption This handlers how we return data or throw errors
  */
-export const returnHandler = <S extends ISchema, O extends IOptions>(options: IOptions, errors: string[], data: any): ReturnHandlerType<S, O> => {
-  // check if we have any errors
-  if (!errors.length) return data as any;
-
-  // if we don't wanna trow an error, We return just an Array<string>
-  if (options?.noThrow === true) return { errors } as any;
-  // else throw the error
+export const returnHandler = <S extends ISchema>(errors: ErrorType[], data: any): ReturnHandlerType<S> => {
+  // return the data if we have no validation errors
+  if (!errors.length) return cleanObject(data);
+  // throw the errors
   else throw errors;
+};
+
+/**
+ * @description Delete all the keys that are undefined
+ */
+export const cleanObject = <T extends object>(o: T): T => {
+  // loop trough and delete undefined keys
+  for (let i of Object.entries(o)) {
+    if (i[1] === undefined) delete o[i[0]];
+  }
+
+  // if object is empty, return null
+  if (Object.entries(o).length === 0) return null;
+
+  return o;
+};
+
+export const valueType = <T extends Type>(value: T): Type => {
+  if (Array.isArray(value)) return 'array';
+  return typeof value;
 };

@@ -1,19 +1,34 @@
+import { Check } from './check';
+
 export interface ISchema {
-  [key: string]: {
-    type?: 'string' | 'number' | 'boolean' | 'object' | 'array';
-    nullable?: boolean;
-    required?: boolean;
-    length?:
-      | {
-          min?: number;
-          max?: number;
-        }
-      | [number, number];
-  };
+  [index: string]: Check;
 }
+
+export interface SchemaBase {
+  type?: Type;
+  nullable?: boolean;
+  required?: boolean;
+  length?: Length;
+}
+
+export type Type = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'symbol' | 'function' | 'bigint' | 'undefined';
+
+export type Length = lengthObject | lengthArray;
+
+type lengthObject = {
+  min?: number;
+  max?: number;
+};
+
+type lengthArray = [number, number];
 
 export interface IOptions {
   requireAll?: boolean;
   overflow?: boolean;
-  noThrow?: boolean;
 }
+
+export interface ErrorType {
+  key: string;
+  reason: string;
+}
+[];

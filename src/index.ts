@@ -1,2 +1,2 @@
-export * from './validation';
-export * from './interfaces';
+export { validate } from './validation';
+export { check } from './check';
