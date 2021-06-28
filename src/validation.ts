@@ -29,15 +29,17 @@ export const validate = <T extends ISchema, S extends IOptions>(data: any, schem
 
   // iterate over the data we pass trough
   for (let item of inputData) {
-    // variables
+    // Varialbes
     const key = item[0];
     const value = item[1];
 
-    // skip if there is no schema configuration
+    // Skip if there is no schema for the key
     if (!schema[key]) continue;
-
-    // Get the rules of the key
+    
     const rules = schema[key]['options'];
+
+    // Skip if key is not present and not required
+    if (!rules.required || !options.requireAll) continue;
 
     // check if the key is present in the schema
     if (rules === undefined || Object.getOwnPropertyNames(rules).length === 0) continue;
