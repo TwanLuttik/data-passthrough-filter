@@ -2,20 +2,18 @@ import { check, validate } from './index';
 
 const test = () => {
   try {
-    const d = { location: 'Canada', other: false };
-
-    const schem = {
-      location: check().string(),
-      username: check().string(),
+    const d = {
+      list: 10,
     };
 
-    // schem.email
+    const schem = {
+      list: check().number().length({ min: 5, max: 10 })
+    };
 
     const val = validate(d, schem, { overflow: false });
 
-    // val.
-
-    console.log(val);
+    if (!val) console.log('Object is empty');
+    else console.log(val);
   } catch (error) {
     console.log('error', error);
   }

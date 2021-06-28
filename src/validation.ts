@@ -1,5 +1,5 @@
-import { ErrorType, IOptions, ISchema } from './interfaces';
-import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerType, sanatizeData } from './lib';
+import { ErrorType, IOptions, ISchema, Type } from './interfaces';
+import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerType, sanatizeData, valueType } from './lib';
 
 /**
  * @param {object} data Your input data as an object with k/v
@@ -30,15 +30,15 @@ export const validate = <T extends ISchema, S extends IOptions>(data: any, schem
   for (let item of inputData) {
     // Varialbes
     const key = item[0];
-    const value = item[1];
+    const value: Type = item[1];
 
     // Skip if there is no schema for the key
     if (!schema[key]) continue;
-    
+
     const rules = schema[key]['options'];
 
-    // Skip if key is not present and not required
-    if (!rules.required || !options.requireAll) continue;
+    // Skip if the schema is present but the key not
+    if (rules && value === undefined) continue;
 
     // check if the key is present in the schema
     if (rules === undefined || Object.getOwnPropertyNames(rules).length === 0) continue;
@@ -49,16 +49,14 @@ export const validate = <T extends ISchema, S extends IOptions>(data: any, schem
       continue;
     }
 
-    // Check if type is correct with the schema
-    if (rules.type === typeof value) continue;
     // Else push error
-    else if (rules.type !== typeof value) {
+    if (rules.type !== valueType(value)) {
       errors.push({ key, reason: 'type should be ' + rules.type });
       continue;
     }
 
     // Check for the length if its too short or too long
-    if (rules?.length) errors = errors.concat(lengthCheck(key, value, rules));
+    if (rules?.length) errors = errors.concat(lengthCheck(key, value, rules.length));
   }
 
   // Return the data

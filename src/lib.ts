@@ -1,22 +1,29 @@
-import { ErrorType, ISchema, SchemaBase } from './interfaces';
+import { ErrorType, ISchema, Type } from './interfaces';
 
 export const lengthCheck = (key: any, value: any, rule: any): ErrorType[] => {
-  let errors = [];
+  let errors: ErrorType[] = [];
+  const type = valueType(value);
 
   // filter for blacklisted properties
-  if (typeof value === 'object') return;
+  if (type === 'object') return;
 
-  // min length check
-  const MIN = Array.isArray(rule.length) ? rule.length[0] : rule.length.min;
-  if (value?.length < MIN) {
-    errors.push({ key, reason: `minimun length ${MIN} required` });
+  // get the value size depending what type it is
+  const valueSize = type === 'number' ? value : value.length;
+
+  // Check for min size
+  const minSizeRule = Array.isArray(rule) ? rule[0] : rule.min;
+  if (minSizeRule !== null && valueSize < minSizeRule) {
+    errors.push({ key, reason: `minimun length is ${minSizeRule}` });
+    return errors;
   }
 
-  // max length check
-  const MAX = Array.isArray(rule.length) ? rule.length[1] : rule.length.max;
-  if (value?.length > MAX) {
-    errors.push({ key, reason: `minimun length ${MAX} required` });
+  // Check for max size
+  const maxSizeRule = Array.isArray(rule) ? rule[1] : rule.max;
+  if (maxSizeRule !== null && valueSize > maxSizeRule) {
+    errors.push({ key, reason: `maximum length is ${maxSizeRule}` });
+    return errors;
   }
+
   return errors;
 };
 
@@ -81,9 +88,19 @@ export const returnHandler = <S extends ISchema>(errors: ErrorType[], data: any)
 /**
  * @description Delete all the keys that are undefined
  */
-export const cleanObject = <T>(o: T): T => {
+export const cleanObject = <T extends object>(o: T): T => {
+  // loop trough and delete undefined keys
   for (let i of Object.entries(o)) {
     if (i[1] === undefined) delete o[i[0]];
   }
+
+  // if object is empty, return null
+  if (Object.entries(o).length === 0) return null;
+
   return o;
+};
+
+export const valueType = <T extends Type>(value: T): Type => {
+  if (Array.isArray(value)) return 'array';
+  return typeof value;
 };

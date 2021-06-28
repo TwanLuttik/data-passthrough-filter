@@ -5,16 +5,22 @@ export interface ISchema {
 }
 
 export interface SchemaBase {
-  type?: 'string' | 'number' | 'boolean' | 'object' | 'array';
+  type?: Type;
   nullable?: boolean;
   required?: boolean;
-  length?:
-    | {
-        min?: number;
-        max?: number;
-      }
-    | [number, number];
+  length?: Length;
 }
+
+export type Type = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'symbol' | 'function' | 'bigint' | 'undefined';
+
+export type Length = lengthObject | lengthArray;
+
+type lengthObject = {
+  min?: number;
+  max?: number;
+};
+
+type lengthArray = [number, number];
 
 export interface IOptions {
   requireAll?: boolean;
