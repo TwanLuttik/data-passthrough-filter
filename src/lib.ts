@@ -68,13 +68,22 @@ export const requiredCheck = <T>(data: T, schema: ISchema): ErrorType[] => {
 // Return type handler
 export type ReturnHandlerType<S extends ISchema> = { [K in keyof S]: any };
 
-
 /**
  * @descrption This handlers how we return data or throw errors
  */
 export const returnHandler = <S extends ISchema>(errors: ErrorType[], data: any): ReturnHandlerType<S> => {
   // return the data if we have no validation errors
-  if (!errors.length) return data;
+  if (!errors.length) return cleanObject(data);
   // throw the errors
   else throw errors;
+};
+
+/**
+ * @description Delete all the keys that are undefined
+ */
+export const cleanObject = <T>(o: T): T => {
+  for (let i of Object.entries(o)) {
+    if (i[1] === undefined) delete o[i[0]];
+  }
+  return o;
 };

@@ -14,7 +14,6 @@ export const validate = <T extends ISchema, S extends IOptions>(data: any, schem
 
   // Check if we have input data
   if (!data || !Object.keys(data).length) {
-    errors.push({ key: null, reason: 'No input data received' });
     return returnHandler<T>(errors, data);
   }
 

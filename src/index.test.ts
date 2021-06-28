@@ -2,19 +2,16 @@ import { check, validate } from './index';
 
 const test = () => {
   try {
-    const d = {
-      test: false,
-      email: 'twan@email.com',
-    };
+    const d = { location: 'Canada', other: false };
 
     const schem = {
-      password: check().string(),
-      email: check().string(),
+      location: check().string(),
+      username: check().string(),
     };
 
     // schem.email
 
-    const val = validate(d, schem, { requireAll: false, overflow: false });
+    const val = validate(d, schem, { overflow: false });
 
     // val.
 
