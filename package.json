@@ -1,6 +1,6 @@
 {
   "name": "data-passthrough-filter",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "keywords": [
@@ -49,8 +49,8 @@
     "babel-preset-minify": "^0.5.1",
     "rollup": "^2.51.2",
     "rollup-plugin-terser": "^7.0.2",
-    "tsc-watch": "^4.2.9",
+    "tsc-watch": "^4.4.0",
     "tslib": "^2.3.0",
-    "typescript": "^4.3.4"
+    "typescript": "^4.3.5"
   }
 }

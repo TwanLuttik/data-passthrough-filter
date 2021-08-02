@@ -1,7 +1,7 @@
 import { Check } from './check';
 
 export interface ISchema {
-  [index: string]: Check;
+  [index: string]: Partial<Check>;
 }
 
 export interface SchemaBase {

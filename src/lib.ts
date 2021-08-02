@@ -66,7 +66,7 @@ export const requiredCheck = <T>(data: T, schema: ISchema): ErrorType[] => {
   let errors = [];
 
   for (let entry of entries) {
-    if (!!entry[1]['options'].required && data[entry[0]] === undefined) errors.push({ key: entry[0], reason: `${entry[0]} is required` });
+    if (!!entry[1]['options']?.required && data[entry[0]] === undefined) errors.push({ key: entry[0], reason: `${entry[0]} is required` });
   }
 
   return errors;
@@ -103,4 +103,17 @@ export const cleanObject = <T extends object>(o: T): T => {
 export const valueType = <T extends Type>(value: T): Type => {
   if (Array.isArray(value)) return 'array';
   return typeof value;
+};
+
+/**
+ * @description turns a array of objects into 1 object combined
+ * @param data an array of ojects is required
+ * @returns Object of all K/V
+ */
+export const flattenArrayObjectToObject = (data: object[]): Object => {
+  let newDataMap = {};
+  for (let item of data) {
+    newDataMap = { ...newDataMap, ...item };
+  }
+  return newDataMap;
 };

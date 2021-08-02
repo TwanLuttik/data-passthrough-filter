@@ -1,5 +1,5 @@
 import { ErrorType, IOptions, ISchema, Type } from './interfaces';
-import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerType, sanatizeData, valueType } from './lib';
+import { flattenArrayObjectToObject, lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerType, sanatizeData, valueType } from './lib';
 
 /**
  * @param {object} data Your input data as an object with k/v
@@ -8,7 +8,7 @@ import { lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerTyp
  * But it doesn't add extra data that is not listed in the schema
  */
 
-export const validate = <T extends ISchema, S extends IOptions>(data: any, schema?: T, options?: S): ReturnHandlerType<T> => {
+export const validate = <T extends ISchema, S extends IOptions>(data: object | object[], schema?: T, options?: S): ReturnHandlerType<T> => {
   let inputData = [];
   let errors: ErrorType[] = [];
 
@@ -17,6 +17,9 @@ export const validate = <T extends ISchema, S extends IOptions>(data: any, schem
     return returnHandler<T>(errors, data);
   }
 
+  // If the data is a array, merge the data into 1 object
+  if (Array.isArray(data)) data = flattenArrayObjectToObject(data);
+
   // require all check
   if (options?.requireAll) errors = errors.concat(requireAll(data, schema));
 
@@ -24,7 +27,7 @@ export const validate = <T extends ISchema, S extends IOptions>(data: any, schem
   errors = errors.concat(requiredCheck(data, schema));
 
   // sanatize the data if we disallow overflow
-  inputData = options?.overflow === false ? Object.entries(sanatizeData(data, schema)) : Object.entries(data);
+  inputData = Object.entries(options?.overflow === false ? sanatizeData(data, schema) : data);
 
   // iterate over the data we pass trough
   for (let item of inputData) {

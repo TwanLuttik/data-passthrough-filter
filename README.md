@@ -1,4 +1,4 @@
-# Data Passthrough Filter 2.0.0
+# Data Passthrough Filter 2.1.0
 
 
 ## Basic usage
@@ -6,7 +6,7 @@
 ```typescript
 import { validate, check } from 'data-passthroug-filter';
 
-// Incoming data
+// Incoming data (data can be object or array of objects)
 const data = {
   email: 'twan@email.com',
   password: 123,
