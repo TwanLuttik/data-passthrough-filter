@@ -52,8 +52,8 @@ export const validate = <T extends ISchema, S extends IOptions>(data: object | o
       continue;
     }
 
-    // Else push error
-    if (rules.type !== valueType(value)) {
+    // Check for type
+    if (rules?.type && valueType(value) !== rules.type) {
       errors.push({ key, reason: 'type should be ' + rules.type });
       continue;
     }
