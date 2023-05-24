@@ -4,17 +4,17 @@ const test = () => {
   try {
     const d = {
       id: 4321423524,
-      title: 'dsadsa'
+      title: 'dsadsa',
+      pass: 'tdsadsa',
     };
 
     const schem = {
       id: check().number().required(),
-    }
+      pass: check().string().required(),
+    };
 
     const val = validate(d, schem);
-
-    if (!val) console.log('Object is empty');
-    else console.log(val);
+    console.log(val);
   } catch (error) {
     console.log('error', error);
   }

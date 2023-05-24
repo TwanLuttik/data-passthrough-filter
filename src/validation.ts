@@ -14,6 +14,9 @@ export const validate = <T extends ISchema, S extends IOptions>(data: object | o
 
   // Check if we have input data
   if (!data || !Object.keys(data).length) {
+    // Check if there is required data needed
+    errors = errors.concat(requiredCheck(data, schema));
+
     return returnHandler<T>(errors, data);
   }
 
