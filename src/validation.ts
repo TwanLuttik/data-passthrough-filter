@@ -1,5 +1,15 @@
-import { ErrorType, IOptions, ISchema, Type } from './interfaces';
-import { flattenArrayObjectToObject, lengthCheck, requireAll, requiredCheck, returnHandler, ReturnHandlerType, sanatizeData, valueType } from './lib';
+import { ErrorType, IOptions, ISchema, Type } from './types';
+import { Check } from './check';
+import {
+  flattenArrayObjectToObject,
+  lengthCheck,
+  requireAll,
+  requiredCheck,
+  returnHandler,
+  ReturnHandlerType,
+  sanatizeData,
+  valueType,
+} from './lib';
 
 /**
  * @param {object} data Your input data as an object with k/v
@@ -8,14 +18,20 @@ import { flattenArrayObjectToObject, lengthCheck, requireAll, requiredCheck, ret
  * But it doesn't add extra data that is not listed in the schema
  */
 
-export const validate = <T extends ISchema, S extends IOptions>(data: object | object[], schema?: T, options?: S): ReturnHandlerType<T> => {
+export const validate = <T extends ISchema, S extends IOptions>(
+  data: object | object[],
+  schema: (e: () => Check) => T,
+  options?: S
+): ReturnHandlerType<T> => {
   let inputData = [];
   let errors: ErrorType[] = [];
+
+  let parsedSchema = schema(() => new Check());
 
   // Check if we have input data
   if (!data || !Object.keys(data).length) {
     // Check if there is required data needed
-    errors = errors.concat(requiredCheck(data, schema));
+    errors = errors.concat(requiredCheck(data, parsedSchema));
 
     return returnHandler<T>(errors, data);
   }
@@ -24,13 +40,13 @@ export const validate = <T extends ISchema, S extends IOptions>(data: object | o
   if (Array.isArray(data)) data = flattenArrayObjectToObject(data);
 
   // require all check
-  if (options?.requireAll) errors = errors.concat(requireAll(data, schema));
+  if (options?.requireAll) errors = errors.concat(requireAll(data, parsedSchema));
 
   // check for required
-  errors = errors.concat(requiredCheck(data, schema));
+  errors = errors.concat(requiredCheck(data, parsedSchema));
 
   // sanatize the data if we disallow overflow
-  inputData = Object.entries(options?.overflow === false ? sanatizeData(data, schema) : data);
+  inputData = Object.entries(options?.overflow === false ? sanatizeData(data, parsedSchema) : data);
 
   // iterate over the data we pass trough
   for (let item of inputData) {

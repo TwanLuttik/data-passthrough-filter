@@ -1,10 +1,9 @@
-# Data Passthrough Filter 2.1.1
-
+# Data Passthrough Filter 2.2.0
 
 ## Basic usage
 
-```typescript
-import { validate, check } from 'data-passthroug-filter';
+```ts
+import { validate } from 'data-passthroug-filter';
 
 // Incoming data (data can be object or array of objects)
 const data = {
@@ -12,17 +11,14 @@ const data = {
   password: 123,
 };
 
-// Schema for validating the data
-const schema = {
-  email: check().string().required(),
-  password: check().number().required(),
-};
-
 // Global options
-const options = { overflow: false }
+const options = { overflow: false };
 
-// instance returns the validated data
-const val = validate(data, schema, options);
+// Instance returns the data set with our schema and options
+const val = validate(data, (e) => {
+  email: e().string().required(),
+  password: e().number().required(),
+}, options);
 ```
 
 <br>
@@ -30,7 +26,7 @@ const val = validate(data, schema, options);
 
 ## Schema
 
-The schema is done by chaining functions with starting of with the `check()` function and passing the value as parameter
+We create the schema on the second argument, and it returns the schema functions we can use by chaining them like this `e().number().require()`.
 
 <br>
 

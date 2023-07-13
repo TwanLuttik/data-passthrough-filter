@@ -11,7 +11,16 @@ export interface SchemaBase {
   length?: Length;
 }
 
-export type Type = 'string' | 'number' | 'boolean' | 'object' | 'array' | 'symbol' | 'function' | 'bigint' | 'undefined';
+export type Type =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'object'
+  | 'array'
+  | 'symbol'
+  | 'function'
+  | 'bigint'
+  | 'undefined';
 
 export type Length = lengthObject | lengthArray;
 

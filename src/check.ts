@@ -1,11 +1,9 @@
-import { SchemaBase } from './interfaces';
+import { SchemaBase } from './types';
 
 export class Check {
-  private options: SchemaBase;
+  private options: SchemaBase = {};
 
-  constructor() {
-    this.options = {};
-  }
+  constructor() {}
 
   public type(v: 'string' | 'number' | 'boolean' | 'object' | 'array') {
     this.options.type = v;
@@ -38,12 +36,12 @@ export class Check {
   }
 
   public required(v?: boolean) {
-    this.options.required = v || true;
+    this.options.required = v === undefined ? true : v;
     return this;
   }
 
   public nullable(v?: boolean) {
-    this.options.nullable = v || true;
+    this.options.nullable = v === undefined ? true : v;
     return this;
   }
 
@@ -52,5 +50,3 @@ export class Check {
     return this;
   }
 }
-
-export let check = (): Check => new Check();

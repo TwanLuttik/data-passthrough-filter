@@ -1,4 +1,4 @@
-import { ErrorType, ISchema, Type } from './interfaces';
+import { ErrorType, ISchema, Type } from './types';
 
 export const lengthCheck = (key: any, value: any, rule: any): ErrorType[] => {
   let errors: ErrorType[] = [];
@@ -66,7 +66,11 @@ export const requiredCheck = <T>(data: T, schema: ISchema): ErrorType[] => {
   let errors = [];
 
   for (let entry of entries) {
-    if (!!entry[1]['options']?.required && data[entry[0]] === undefined) errors.push({ key: entry[0], reason: `${entry[0]} is required` });
+    let key = entry[0];
+
+    if (!!entry[1]['options'].required && data[key] === undefined) {
+      errors.push({ key: key, reason: `${key} is required` });
+    }
   }
 
   return errors;
